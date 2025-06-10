@@ -3,6 +3,7 @@ package mate.academy.rickandmorty.controller;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.service.RickyCharacterClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,9 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class RickyCharacterController {
     private final RickyCharacterClient rickyCharacterClient;
 
-    @GetMapping("/test")
-    public String testClient() {
-        rickyCharacterClient.getCharacter(1L);
-        return "Done!";
+    @GetMapping("/{id}")
+    public void testClient(@PathVariable Long id) {
+        rickyCharacterClient.getCharacter(id);
     }
 }
