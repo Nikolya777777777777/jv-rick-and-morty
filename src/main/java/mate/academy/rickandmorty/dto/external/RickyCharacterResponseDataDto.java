@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class RickyCharacterResponseDataDto {
     @JsonProperty("id")
-    private String externalId;
+    private Long externalId;
     private String name;
     private String status;
     private String gender;
