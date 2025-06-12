@@ -9,19 +9,21 @@ import java.net.http.HttpResponse;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.RickyCharacterResponseDataDto;
 import mate.academy.rickandmorty.mapper.RickyCharacterMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class RickyCharacterClient {
-    private static final String BASE_URL_FIND_CHARACTER_BY_ID = "https://rickandmortyapi.com/api/character/%s";
+    @Value("${spring.datasource.url.for.api}")
+    private String baseUrl;
     private final ObjectMapper objectMapper;
     private final RickyCharacterService characterService;
     private final RickyCharacterMapper rickyCharacterMapper;
 
     public RickyCharacterResponseDataDto getCharacter(Long id) {
         HttpClient httpClient = HttpClient.newHttpClient();
-        String url = BASE_URL_FIND_CHARACTER_BY_ID.formatted(String.valueOf(id));
+        String url = baseUrl.formatted(String.valueOf(id));
 
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .GET()
@@ -36,7 +38,7 @@ public class RickyCharacterClient {
             characterService.save(rickyCharacterMapper.toEntity(rickyCharacterResponseDataDto));
             return rickyCharacterResponseDataDto;
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Can not het information from api about character ", e);
         }
     }
 }
